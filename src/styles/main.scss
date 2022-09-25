@@ -17,6 +17,10 @@ body {
 		color: inherit;
 	}
 
+	.hidden {
+		display: none !important;
+	}
+
 	@import "components/header";
 	@import "components/main";
 	@import "components/footer";
