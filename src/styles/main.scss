@@ -1,0 +1,23 @@
+body {
+	--block-size: 32px;
+	--block-margin: 2px;
+	--block-border-radius: 7px;
+
+	background-color: #333;
+	color: white;
+
+	height: 100vh;
+	margin: 0;
+
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+
+	main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		@import "components/playground";
+	}
+}
