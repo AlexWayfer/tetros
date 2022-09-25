@@ -13,11 +13,11 @@ body {
 	justify-content: center;
 	flex-direction: column;
 
-	main {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		@import "components/playground";
+	a {
+		color: inherit;
 	}
+
+	@import "components/header";
+	@import "components/main";
+	@import "components/footer";
 }
