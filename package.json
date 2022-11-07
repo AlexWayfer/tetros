@@ -1,15 +1,15 @@
 {
 	"dependencies": {
+		"array-sample": "^0.1.0",
 		"esbuild": "^0.15.9",
-		"sass": "^1.55.0",
-		"typescript": "^4.8.3"
+		"sass": "^1.55.0"
 	},
 	"scripts": {
 		"watch:styles": "pnpm build:styles --watch",
 		"watch:scripts": "pnpm build:scripts --watch",
 		"watch": "pnpm npm-run-all --parallel watch:*",
 		"build:styles": "sass src/styles/main.scss public/styles/main.css -s compressed",
-		"build:scripts": "esbuild src/scripts/main.ts --outdir=public/scripts/ --bundle --sourcemap",
+		"build:scripts": "esbuild src/scripts/main.js --outdir=public/scripts/ --bundle --sourcemap",
 		"build": "pnpm npm-run-all build:*"
 	},
 	"devDependencies": {

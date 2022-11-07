@@ -1,15 +1,15 @@
 lockfileVersion: 5.4
 
 specifiers:
+  array-sample: ^0.1.0
   esbuild: ^0.15.9
   npm-run-all: ^4.1.5
   sass: ^1.55.0
-  typescript: ^4.8.3
 
 dependencies:
+  array-sample: 0.1.0
   esbuild: 0.15.9
   sass: 1.55.0
-  typescript: 4.8.3
 
 devDependencies:
   npm-run-all: 4.1.5
@@ -47,6 +47,11 @@ packages:
     dependencies:
       normalize-path: 3.0.0
       picomatch: 2.3.1
+    dev: false
+
+  /array-sample/0.1.0:
+    resolution: {integrity: sha512-IwWDEfvTVs+CLLC7vYuLiwi49owew44gsyuqCHMNqzeGE0u48hNpjKeuRntRcsYRU9IUd/EPitpLGHMXplWJEQ==}
+    engines: {node: '>=0.10.15'}
     dev: false
 
   /balanced-match/1.0.2:
@@ -881,12 +886,6 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
-    dev: false
-
-  /typescript/4.8.3:
-    resolution: {integrity: sha512-goMHfm00nWPa8UvR/CPSvykqf6dVV8x/dp0c5mFTMTIu0u0FlGWRioyy7Nn0PGAdHxpJZnuO/ut+PpQ8UiHAig==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
     dev: false
 
   /unbox-primitive/1.0.2:

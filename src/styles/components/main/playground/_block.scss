@@ -1,0 +1,13 @@
+.block {
+	display: inline-block;
+	position: absolute;
+
+	width: var(--block-size);
+	height: var(--block-size);
+
+	margin: var(--block-margin);
+
+	&.yellow {
+		background-color: yellow;
+	}
+}

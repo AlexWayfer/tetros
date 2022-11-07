@@ -1,3 +1,5 @@
+Array.prototype.sample = require('array-sample')
+
 import { Playground } from './components/playground'
 
 window.addEventListener('load', _event => {
