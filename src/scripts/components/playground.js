@@ -6,6 +6,7 @@ export class Playground {
 		this.element = element
 
 		this.blocksWidth = getComputedStyle(this.element).getPropertyValue('--blocks-width')
+		this.blocksHeight = getComputedStyle(this.element).getPropertyValue('--blocks-height')
 
 		this.startOverlay = this.element.querySelector('article.start')
 
@@ -21,21 +22,40 @@ export class Playground {
 			console.debug('Hello, world!')
 
 			if (this.currentFigure) {
-				this.currentFigure.moveDown()
+				if (this.#canMove('down')) {
+					this.currentFigure.moveDown()
+				} else {
+					this.currentFigure.destruct()
+
+					this.#constructFigure()
+				}
 			} else {
-				const figureClass = Figures.sample()
-
-				console.debug((this.blocksWidth / 2 - Math.ceil(figureClass.shape[0].length / 2)))
-
-				this.currentFigure = new figureClass(
-					new Point(
-						(this.blocksWidth / 2 - Math.ceil(figureClass.shape[0].length / 2)),
-						0
-					)
-				)
-
-				this.element.appendChild(this.currentFigure.element)
+				this.#constructFigure()
 			}
 		}, 1000)
+	}
+
+	#constructFigure() {
+		const figureClass = Figures.sample()
+
+		this.currentFigure = new figureClass(
+			new Point(
+				(this.blocksWidth / 2 - Math.ceil(figureClass.shape[0].length / 2)),
+				0
+			)
+		)
+
+		this.element.appendChild(this.currentFigure.element)
+	}
+
+	#canMove(direction, figure = this.currentFigure) {
+		switch(direction) {
+			case 'down':
+				return figure.position.y + figure.constructor.shape.length <= this.blocksHeight
+			case 'up':
+				return false
+			default:
+				throw new Error('Unknown direction for figure')
+		}
 	}
 }
