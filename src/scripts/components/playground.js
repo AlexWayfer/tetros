@@ -2,6 +2,8 @@ import { Point } from './playground/point'
 import Figures from './playground/figures/index'
 
 export class Playground {
+	static #speed = 2 // in seconds
+
 	constructor(element) {
 		this.element = element
 
@@ -32,7 +34,7 @@ export class Playground {
 			} else {
 				this.#constructFigure()
 			}
-		}, 1000)
+		}, 1000 / this.constructor.#speed)
 	}
 
 	#constructFigure() {
