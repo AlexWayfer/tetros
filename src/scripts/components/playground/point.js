@@ -7,4 +7,8 @@ export class Point {
 	add(anotherPoint) {
 		return new this.constructor(this.x + anotherPoint.x, this.y + anotherPoint.y)
 	}
+
+	equals(anotherPoint) {
+		return this.x == anotherPoint.x && this.y == anotherPoint.y
+	}
 }

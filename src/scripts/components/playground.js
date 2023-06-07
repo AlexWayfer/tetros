@@ -72,11 +72,18 @@ export class Playground {
 	#canMoveFigure(direction, figure = this.currentFigure) {
 		switch(direction) {
 			case 'down':
-				// TODO: check for blocks below
 				if (figure.position.y + figure.constructor.shape.length >= this.constructor.#height)
 					return false
 
-				return true
+				restBlocksPositions = this.blocks.map(block => block.position)
+
+				return !figure.blocks.some(block => {
+					return restBlocksPositions.some(restBlockPosition => {
+						return restBlockPosition.equals(
+							block.position.add(figure.position).add(new Point(0, 1))
+						)
+					})
+				})
 
 			case 'up':
 				return false
