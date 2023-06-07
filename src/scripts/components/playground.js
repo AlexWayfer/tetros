@@ -63,7 +63,7 @@ export class Playground {
 			this.element.appendChild(block.element)
 		})
 
-		this.blocks.concat(newBlocks)
+		this.blocks.push(...newBlocks)
 
 		this.currentFigure.element.remove()
 		delete this.currentFigure
