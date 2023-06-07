@@ -9,7 +9,7 @@ export class Base {
 			row.forEach((element, elementIndex) => {
 				if (!element) return
 
-				this.blocks.push(new Block(new Point(elementIndex, rowIndex)))
+				this.blocks.push(new Block(new Point(elementIndex, rowIndex), this.constructor.color))
 			})
 		})
 

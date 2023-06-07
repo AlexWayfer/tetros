@@ -12,6 +12,8 @@ export class Playground {
 		this.element.style.setProperty('--blocks-width', this.constructor.#width)
 		this.element.style.setProperty('--blocks-height', this.constructor.#height)
 
+		this.blocks = []
+
 		this.startOverlay = this.element.querySelector('article.start')
 
 		this.startOverlay.querySelector('button').addEventListener('click', () => {
@@ -29,7 +31,7 @@ export class Playground {
 				if (this.#canMoveFigure('down')) {
 					this.currentFigure.moveDown()
 				} else {
-					// this.#destructFigure()
+					this.#destructFigure()
 
 					this.#constructFigure()
 				}
@@ -50,13 +52,35 @@ export class Playground {
 		this.element.appendChild(this.currentFigure.element)
 	}
 
+	#destructFigure(figure = this.currentFigure) {
+		const newBlocks = figure.blocks
+
+		newBlocks.forEach(block => {
+			block.element.remove()
+
+			block.position = figure.position.add(block.position)
+
+			this.element.appendChild(block.element)
+		})
+
+		this.blocks.concat(newBlocks)
+
+		this.currentFigure.element.remove()
+		delete this.currentFigure
+	}
+
 	#canMoveFigure(direction, figure = this.currentFigure) {
 		switch(direction) {
 			case 'down':
 				// TODO: check for blocks below
-				return figure.position.y + figure.constructor.shape.length < this.constructor.#height
+				if (figure.position.y + figure.constructor.shape.length >= this.constructor.#height)
+					return false
+
+				return true
+
 			case 'up':
 				return false
+
 			// TODO: add moving left/right
 			default:
 				throw new Error('Unknown direction for figure')

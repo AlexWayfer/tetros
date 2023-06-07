@@ -11,6 +11,4 @@
 
 	left: calc((var(--block-size) + var(--block-margin)) * var(--position-x));
 	top: calc((var(--block-size) + var(--block-margin)) * var(--position-y));
-
-	@import "figures/O";
 }
