@@ -1,18 +1,12 @@
 export class Block {
-	constructor(position, color) {
+	constructor(position) {
 		this.position = position
-		this.color = color
 
 		let element = document.createElement('div')
-		element.classList.add('block', this.color)
-		element.style.left =
-			`calc(
-				(var(--block-size) * ${this.position.x}) + (${this.position.x} * var(--block-margin))
-			)`
-		element.style.top =
-			`calc(
-				(var(--block-size) * ${this.position.y}) + (${this.position.y} * var(--block-margin))
-			)`
+		element.classList.add('block')
+
+		element.style.setProperty('--position-x', this.position.x)
+		element.style.setProperty('--position-y', this.position.y)
 
 		this.element = element
 	}

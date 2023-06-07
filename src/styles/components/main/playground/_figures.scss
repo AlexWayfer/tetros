@@ -1,5 +1,16 @@
 .figure {
 	position: absolute;
 
-	@import "figures/square";
+	width: calc(
+		var(--block-size) * var(--width) + var(--block-margin) * (var(--width) + 1)
+	);
+
+	height: calc(
+		var(--block-size) * var(--height) + var(--block-margin) * (var(--height) + 1)
+	);
+
+	left: calc((var(--block-size) + var(--block-margin)) * var(--position-x));
+	top: calc((var(--block-size) + var(--block-margin)) * var(--position-y));
+
+	@import "figures/O";
 }

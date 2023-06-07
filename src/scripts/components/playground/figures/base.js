@@ -9,14 +9,16 @@ export class Base {
 			row.forEach((element, elementIndex) => {
 				if (!element) return
 
-				this.blocks.push(new Block(new Point(elementIndex, rowIndex), this.constructor.color))
+				this.blocks.push(new Block(new Point(elementIndex, rowIndex)))
 			})
 		})
 
 		let element = document.createElement('div')
+
 		element.classList.add('figure', this.constructor.name)
-		element.style.width = `calc(var(--block-size) * ${this.constructor.shape[0].length})`
-		element.style.height = `calc(var(--block-size) * ${this.constructor.shape.length})`
+
+		element.style.setProperty('--width', this.constructor.shape.length)
+		element.style.setProperty('--height', this.constructor.shape[0].length)
 
 		this.blocks.forEach(block => {
 			element.appendChild(block.element)
@@ -34,7 +36,7 @@ export class Base {
 	#move(newPosition) {
 		this.position = newPosition
 
-		this.element.style.left = `calc(var(--block-size) * ${newPosition.x})`
-		this.element.style.top = `calc(var(--block-size) * ${newPosition.y})`
+		this.element.style.setProperty('--position-x', newPosition.x)
+		this.element.style.setProperty('--position-y', newPosition.y)
 	}
 }

@@ -1,3 +1,3 @@
-import { Square } from './square'
+import { O } from './O'
 
-export default [Square]
+export default [O]

@@ -1,5 +1,4 @@
 .block {
-	display: inline-block;
 	position: absolute;
 
 	width: var(--block-size);
@@ -7,7 +6,8 @@
 
 	margin: var(--block-margin);
 
-	&.yellow {
-		background-color: yellow;
-	}
+	left: calc((var(--block-size) + var(--block-margin)) * var(--position-x));
+	top: calc((var(--block-size) + var(--block-margin)) * var(--position-y));
+
+	background-color: var(--background-color);
 }
