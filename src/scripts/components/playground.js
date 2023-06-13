@@ -6,6 +6,15 @@ export class Playground {
 	static #height = 20 // in blocks
 	static #speed = 2 // in seconds
 
+	#startOverlay = null
+	#resumeOverlay = null
+	#pauseButton = null
+	#startedAt = null
+	#intervalTime = null
+	#interval = null
+	#timeForResume = null
+	#resumeTimeout = null
+
 	constructor(element) {
 		this.element = element
 
@@ -14,31 +23,93 @@ export class Playground {
 
 		this.blocks = []
 
-		this.startOverlay = this.element.querySelector('article.start')
+		this.#startOverlay = this.element.querySelector('article.overlay.start')
 
-		this.startOverlay.querySelector('button').addEventListener('click', () => {
+		this.#startOverlay.querySelector('button').addEventListener('click', () => {
 			this.start()
+		})
+
+		this.#pauseButton = this.element.querySelector('button.pause')
+		this.#pauseButton.addEventListener('click', () => {
+			this.pause()
+		})
+
+		this.#resumeOverlay = this.element.querySelector('article.overlay.resume')
+
+		this.#resumeOverlay.querySelector('button').addEventListener('click', () => {
+			this.resume()
 		})
 	}
 
 	start() {
-		this.startOverlay.classList.add('hidden')
+		this.#startOverlay.classList.add('hidden')
+		this.#pauseButton.classList.remove('hidden')
 
-		setInterval(() => {
-			// console.debug('Hello, world!')
+		// TODO: Recalc both at speed change
+		this.#intervalTime = 1000 / this.constructor.#speed
+		this.#startedAt = performance.now()
 
-			if (this.currentFigure) {
-				if (this.#canMoveFigure('down')) {
-					this.currentFigure.moveDown()
-				} else {
-					this.#destructFigure()
+		// console.debug('!start', 'this.#intervalTime = ', this.#intervalTime)
+		// console.debug('!start', 'this.#startedAt = ', this.#startedAt)
 
-					this.#constructFigure()
-				}
+		this.#initializeInterval()
+	}
+
+	pause() {
+		if (this.#timeForResume || !this.#startedAt) return null
+
+		this.#timeForResume = (performance.now() - this.#startedAt) % this.#intervalTime
+
+		// console.debug('!pause', 'this.#timeForResume = ', this.#timeForResume)
+
+		clearTimeout(this.#resumeTimeout)
+		clearInterval(this.#interval)
+
+		this.#resumeOverlay.classList.remove('hidden')
+		this.#pauseButton.classList.add('hidden')
+	}
+
+	resume() {
+		this.#startedAt = performance.now()
+
+		// console.debug('!resume', 'this.#startedAt = ', this.#startedAt)
+		// console.debug('!resume', 'this.#timeForResume = ', this.#timeForResume)
+
+		this.#resumeOverlay.classList.add('hidden')
+		this.#pauseButton.classList.remove('hidden')
+
+		this.#resumeTimeout = setTimeout(() => {
+			// It's for a check of pause in a pause
+			this.#timeForResume = null
+
+			// console.debug('!resume', 'this.#timeForResume = ', this.#timeForResume)
+
+			this.#tick()
+
+			this.#initializeInterval()
+		}, this.#timeForResume)
+	}
+
+	#initializeInterval()	{
+		this.#interval = setInterval(() => {
+			this.#tick()
+		}, this.#intervalTime)
+	}
+
+	#tick() {
+		// console.debug('Hello, world!')
+
+		if (this.currentFigure) {
+			if (this.#canMoveFigure('down')) {
+				this.currentFigure.moveDown()
 			} else {
+				this.#destructFigure()
+
 				this.#constructFigure()
 			}
-		}, 1000 / this.constructor.#speed)
+		} else {
+			this.#constructFigure()
+		}
 	}
 
 	#constructFigure(figureClass = Figures.sample()) {
