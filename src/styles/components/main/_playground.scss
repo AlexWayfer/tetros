@@ -15,6 +15,10 @@
 
 	border-radius: var(--block-border-radius);
 
+	button {
+		cursor: pointer;
+	}
+
 	article.overlay {
 		position: absolute;
 		top: 0;
