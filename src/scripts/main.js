@@ -27,6 +27,11 @@ window.addEventListener('load', _event => {
 					playground.forceDown()
 				}
 				break
+			case 'ArrowDown':
+				if (playground.isStarted && !playground.isPaused && !playground.isStopped) {
+					playground.forceDown()
+				}
+				break
 		}
 	})
 })
