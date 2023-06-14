@@ -8,6 +8,7 @@ export class Playground {
 
 	#startOverlay = null
 	#resumeOverlay = null
+	#stopOverlay = null
 	#pauseButton = null
 	#startedAt = null
 	#intervalTime = null
@@ -35,14 +36,19 @@ export class Playground {
 		})
 
 		this.#resumeOverlay = this.element.querySelector('article.overlay.resume')
-
 		this.#resumeOverlay.querySelector('button').addEventListener('click', () => {
 			this.resume()
+		})
+
+		this.#stopOverlay = this.element.querySelector('article.overlay.stop')
+		this.#stopOverlay.querySelector('button').addEventListener('click', () => {
+			this.restart()
 		})
 	}
 
 	start() {
 		this.#startOverlay.classList.add('hidden')
+		this.#stopOverlay.classList.add('hidden')
 		this.#pauseButton.classList.remove('hidden')
 
 		// TODO: Recalc both at speed change
@@ -90,6 +96,18 @@ export class Playground {
 		}, this.#timeForResume)
 	}
 
+	stop() {
+		clearInterval(this.#interval)
+
+		this.#stopOverlay.classList.remove('hidden')
+	}
+
+	restart() {
+		this.#clear()
+
+		this.start()
+	}
+
 	#initializeInterval()	{
 		this.#interval = setInterval(() => {
 			this.#tick()
@@ -112,6 +130,16 @@ export class Playground {
 		}
 	}
 
+	#clear() {
+		this.#removeFigure()
+
+		this.blocks.forEach(block => {
+			block.element.remove()
+		})
+
+		this.blocks = []
+	}
+
 	#constructFigure(figureClass = Figures.sample()) {
 		this.currentFigure = new figureClass(
 			new Point(
@@ -119,6 +147,21 @@ export class Playground {
 				0
 			)
 		)
+
+		const restBlocksPositions = this.blocks.map(block => block.position)
+
+		if (
+			this.currentFigure.blocks.some(block => {
+				return restBlocksPositions.some(restBlockPosition => {
+					return restBlockPosition.equals(
+						block.position.add(this.currentFigure.position)
+					)
+				})
+			})
+		) {
+			this.stop()
+			return false
+		}
 
 		this.element.appendChild(this.currentFigure.element)
 	}
@@ -136,8 +179,15 @@ export class Playground {
 
 		this.blocks.push(...newBlocks)
 
-		this.currentFigure.element.remove()
-		delete this.currentFigure
+		this.#removeFigure(figure)
+	}
+
+	#removeFigure(figure = this.currentFigure) {
+		figure.element.remove()
+
+		if (figure == this.currentFigure) {
+			delete this.currentFigure
+		}
 	}
 
 	#canMoveFigure(direction, figure = this.currentFigure) {
@@ -146,7 +196,7 @@ export class Playground {
 				if (figure.position.y + figure.constructor.shape.length >= this.constructor.#height)
 					return false
 
-				restBlocksPositions = this.blocks.map(block => block.position)
+				const restBlocksPositions = this.blocks.map(block => block.position)
 
 				return !figure.blocks.some(block => {
 					return restBlocksPositions.some(restBlockPosition => {
