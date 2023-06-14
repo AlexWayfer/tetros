@@ -55,6 +55,8 @@ export class Playground {
 	}
 
 	get isStopped() {
+		// console.debug('!isStopped', 'this.#startedAt = ', this.#startedAt)
+		// console.debug('!isStopped', 'this.#interval = ', this.#interval)
 		return this.#startedAt && !this.#interval
 	}
 
@@ -102,14 +104,13 @@ export class Playground {
 
 			// console.debug('!resume', 'this.#timeForResume = ', this.#timeForResume)
 
-			this.#tick()
-
 			this.#initializeInterval()
 		}, this.#timeForResume)
 	}
 
 	stop() {
 		clearInterval(this.#interval)
+		this.#interval = null
 
 		this.#stopOverlay.classList.remove('hidden')
 	}
@@ -120,7 +121,21 @@ export class Playground {
 		this.start()
 	}
 
+	forceDown(figure = this.currentFigure) {
+		// console.debug('!forceDown', 'figure = ', figure)
+
+		while (this.#canMoveFigure('down', figure)) {
+			figure.moveDown()
+		}
+
+		this.#destructFigure(figure)
+
+		this.#constructFigure()
+	}
+
 	#initializeInterval()	{
+		this.#tick()
+
 		this.#interval = setInterval(() => {
 			this.#tick()
 		}, this.#intervalTime)
@@ -153,6 +168,7 @@ export class Playground {
 	}
 
 	#constructFigure(figureClass = Figures.sample()) {
+		// console.debug('figureClass = ', figureClass)
 		this.currentFigure = new figureClass(
 			new Point(
 				(this.constructor.#width / 2 - Math.ceil(figureClass.shape[0].length / 2)),

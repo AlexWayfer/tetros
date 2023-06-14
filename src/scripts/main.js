@@ -24,7 +24,7 @@ window.addEventListener('load', _event => {
 				} else if (playground.isStopped) {
 					playground.restart()
 				} else {
-					// Just a game, DROP THE FIGURE
+					playground.forceDown()
 				}
 				break
 		}
