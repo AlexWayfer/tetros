@@ -10,7 +10,11 @@ window.addEventListener('load', _event => {
 
 		switch (event.code) {
 			case 'Escape':
-				playground.pause()
+				if (!playground.isPaused) {
+					playground.pause()
+				} else {
+					playground.resume()
+				}
 				break
 			case 'Space':
 				if (!playground.isStarted) {
