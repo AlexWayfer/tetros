@@ -12,6 +12,17 @@ window.addEventListener('load', _event => {
 			case 'Escape':
 				playground.pause()
 				break
+			case 'Space':
+				if (!playground.isStarted) {
+					playground.start()
+				} else if (playground.isPaused) {
+					playground.resume()
+				} else if (playground.isStopped) {
+					playground.restart()
+				} else {
+					// Just a game, DROP THE FIGURE
+				}
+				break
 		}
 	})
 })

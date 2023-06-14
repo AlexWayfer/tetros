@@ -46,6 +46,18 @@ export class Playground {
 		})
 	}
 
+	get isStarted() {
+		return this.#startedAt != null
+	}
+
+	get isPaused() {
+		return this.#timeForResume
+	}
+
+	get isStopped() {
+		return this.#startedAt && !this.#interval
+	}
+
 	start() {
 		this.#startOverlay.classList.add('hidden')
 		this.#stopOverlay.classList.add('hidden')
@@ -62,7 +74,7 @@ export class Playground {
 	}
 
 	pause() {
-		if (this.#timeForResume || !this.#startedAt) return null
+		if (this.#timeForResume || !this.isStarted) return null
 
 		this.#timeForResume = (performance.now() - this.#startedAt) % this.#intervalTime
 
