@@ -57,12 +57,14 @@ export class Playground {
 	}
 
 	set speed(newValue) {
+		const oldValue = this.#speed
+
 		this.#speed = newValue
 
 		this.#intervalTime = 1000 / this.#speed
 
 		if (this.state == 'running' || this.state == 'accelerated') {
-			this.#calculateTimeoutTime()
+			this.#calculateTimeoutTime(oldValue < newValue)
 			clearTimeout(this.#timeout)
 			clearInterval(this.#interval)
 			this.#initializeTimeout()
@@ -140,7 +142,7 @@ export class Playground {
 	}
 
 	accelerate() {
-		console.debug('!accelerate')
+		// console.debug('!accelerate')
 
 		if (this.state != 'running') return null
 
@@ -148,11 +150,11 @@ export class Playground {
 
 		this.speed *= this.constructor.#accelerationCoefficient
 
-		console.debug('!accelerate', 'done')
+		// console.debug('!accelerate', 'done')
 	}
 
 	stopAcceleration() {
-		console.debug('!stopAcceleration')
+		// console.debug('!stopAcceleration')
 
 		if (this.state != 'accelerated') return null
 
@@ -160,12 +162,17 @@ export class Playground {
 
 		this.state = 'running'
 
-		console.debug('!stopAcceleration', 'done')
+		// console.debug('!stopAcceleration', 'done')
 	}
 
-	#calculateTimeoutTime() {
-		this.#timeoutTime =
-			(performance.now() - (this.#timeoutCreatedAt || this.#intervalCreatedAt)) % this.#intervalTime
+	#calculateTimeoutTime(newIsLess = false) {
+		this.#timeoutTime = (
+			newIsLess ?
+				this.#intervalTime :
+				(
+					performance.now() - (this.#timeoutCreatedAt || this.#intervalCreatedAt)
+				) % this.#intervalTime
+		)
 	}
 
 	#initializeTimeout() {
